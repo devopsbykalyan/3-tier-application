@@ -1,0 +1,7 @@
+<h1>Welcome to 3-Tier App 🚀</h1>
+<p>Frontend talking to Backend...</p>
+<script>
+  fetch("http://localhost:3000/api")
+    .then(res => res.json())
+    .then(data => document.body.innerHTML += `<p>${data.message}</p>`);
+</script>

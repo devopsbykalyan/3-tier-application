@@ -1,0 +1,45 @@
+version: "3.9"
+
+services:
+  frontend:
+    image: nginx:1.29.3-perl
+    container_name: frontend
+    ports:
+      - "8080:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+    depends_on:
+      - backend
+    networks:
+      - demo-app-net
+
+  backend:
+    build: ./backend
+    container_name: backend
+    environment:
+      - DB_URL=mongodb://database:27017/mydb
+    ports:
+      - "3000:3000"
+    depends_on:
+      - database
+    networks:
+      - demo-app-net
+
+  database:
+    image: mongo:6
+    container_name: database
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=pass123
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - demo-app-net
+
+networks:
+  demo-app-net:
+
+volumes:
+  mongo-data:
